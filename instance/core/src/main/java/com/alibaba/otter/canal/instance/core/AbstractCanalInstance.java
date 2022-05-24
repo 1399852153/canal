@@ -75,19 +75,25 @@ public class AbstractCanalInstance extends AbstractCanalLifeCycle implements Can
     @Override
     public void start() {
         super.start();
+        // zk元数据管理
         if (!metaManager.isStart()) {
+            // PeriodMixedMetaManager
             metaManager.start();
         }
 
+        // 报警处理器
         if (!alarmHandler.isStart()) {
             alarmHandler.start();
         }
 
+        // 运行时eventParser（获取数据）=>eventSink（根据规则过滤数据）=> eventStore（存储过滤之后的数据） 最后交给client消费
         if (!eventStore.isStart()) {
+            // MemoryEventStoreWithBuffer
             eventStore.start();
         }
 
         if (!eventSink.isStart()) {
+            // EntryEventSink
             eventSink.start();
         }
 

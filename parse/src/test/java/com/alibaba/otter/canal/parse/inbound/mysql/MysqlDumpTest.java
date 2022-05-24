@@ -35,13 +35,13 @@ public class MysqlDumpTest {
         controller.setConnectionCharsetStd(Charset.forName("UTF-8"));
         controller.setSlaveId(3344L);
         controller.setDetectingEnable(false);
-        controller.setMasterInfo(new AuthenticationInfo(new InetSocketAddress("127.0.0.1", 3306), "root", "hello"));
+        controller.setMasterInfo(new AuthenticationInfo(new InetSocketAddress("127.0.0.1", 3306), "root", "691125"));
         controller.setMasterPosition(startPosition);
         controller.setEnableTsdb(true);
         controller.setDestination("example");
         controller.setTsdbSpringXml("classpath:tsdb/h2-tsdb.xml");
-        controller.setEventFilter(new AviaterRegexFilter("test\\..*"));
-        controller.setEventBlackFilter(new AviaterRegexFilter("canal_tsdb\\..*"));
+        controller.setEventFilter(new AviaterRegexFilter("my_test"));
+//        controller.setEventBlackFilter(new AviaterRegexFilter("canal_tsdb\\..*"));
         controller.setParallel(true);
         controller.setParallelBufferSize(256);
         controller.setParallelThreadSize(2);

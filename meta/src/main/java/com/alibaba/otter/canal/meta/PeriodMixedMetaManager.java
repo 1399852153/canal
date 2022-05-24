@@ -38,8 +38,7 @@ public class PeriodMixedMetaManager extends MemoryMetaManager implements CanalMe
     private ScheduledExecutorService executor;
     private ZooKeeperMetaManager     zooKeeperMetaManager;
     @SuppressWarnings("serial")
-    private final Position           nullCursor = new Position() {
-                                                };
+    private final Position           nullCursor = new Position() {};
     private long                     period     = 1000;                                                 // 单位ms
     private Set<ClientIdentity>      updateCursorTasks;
 
@@ -51,8 +50,9 @@ public class PeriodMixedMetaManager extends MemoryMetaManager implements CanalMe
         }
 
         executor = Executors.newScheduledThreadPool(1);
+        // 获得当前注册的客户端任务节点信息
         destinations = MigrateMap.makeComputingMap(destination -> zooKeeperMetaManager.listAllSubscribeInfo(destination));
-
+        // 获得客户端消费的游标
         cursors = MigrateMap.makeComputingMap(clientIdentity -> {
             Position position = zooKeeperMetaManager.getCursor(clientIdentity);
             if (position == null) {
@@ -74,7 +74,7 @@ public class PeriodMixedMetaManager extends MemoryMetaManager implements CanalMe
 
         updateCursorTasks = Collections.synchronizedSet(new HashSet<>());
 
-        // 启动定时工作任务
+        // 启动定时工作任务（定期的把本地的消费下标信息同步到zk中）
         executor.scheduleAtFixedRate(() -> {
             List<ClientIdentity> tasks = new ArrayList<>(updateCursorTasks);
             for (ClientIdentity clientIdentity : tasks) {

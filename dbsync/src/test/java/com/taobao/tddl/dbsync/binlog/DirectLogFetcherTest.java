@@ -25,18 +25,19 @@ public class DirectLogFetcherTest extends BaseLogFetcherTest {
         DirectLogFetcher fecther = new DirectLogFetcher();
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306", "root", "hello");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306", "root", "691125");
             Statement statement = connection.createStatement();
             statement.execute("SET @master_binlog_checksum='@@global.binlog_checksum'");
             statement.execute("SET @mariadb_slave_capability='" + LogEvent.MARIA_SLAVE_CAPABILITY_MINE + "'");
 
-            fecther.open(connection, "mysql-bin.000007", 89797036L, 2);
+            fecther.open(connection, "mysql-bin.000005", 0L, 2);
 
             LogDecoder decoder = new LogDecoder(LogEvent.UNKNOWN_EVENT, LogEvent.ENUM_END_EVENT);
             LogContext context = new LogContext();
             while (fecther.fetch()) {
                 LogEvent event = decoder.decode(fecther, context);
                 int eventType = event.getHeader().getType();
+                System.out.println("=============================== eventType="  + eventType + " ========================");
                 switch (eventType) {
                     case LogEvent.ROTATE_EVENT:
                         binlogFileName = ((RotateLogEvent) event).getFilename();

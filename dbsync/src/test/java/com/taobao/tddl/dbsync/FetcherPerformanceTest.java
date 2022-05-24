@@ -13,12 +13,12 @@ public class FetcherPerformanceTest {
     public static void main(String args[]) {
         try (DirectLogFetcher fetcher = new DirectLogFetcher()) {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306", "root", "hello");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306", "root", "691125");
             Statement statement = connection.createStatement();
             statement.execute("SET @master_binlog_checksum='@@global.binlog_checksum'");
             statement.execute("SET @mariadb_slave_capability='" + LogEvent.MARIA_SLAVE_CAPABILITY_MINE + "'");
 
-            fetcher.open(connection, "mysql-bin.000006", 120L, 2);
+            fetcher.open(connection, "mysql-bin.000001", 0L, 2);
 
             AtomicLong sum = new AtomicLong(0);
             long start = System.currentTimeMillis();

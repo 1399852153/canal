@@ -252,8 +252,11 @@ public class MysqlConnection implements ErosaConnection {
 
     @Override
     public void dump(GTIDSet gtidSet, MultiStageCoprocessor coprocessor) throws IOException {
+        // dump前设置相关参数
         updateSettings();
+        // 获取binlog checkSum信息
         loadBinlogChecksum();
+        // 伪装成从库，发送dump请求监听binlog
         sendBinlogDumpGTID(gtidSet);
         ((MysqlMultiStageCoprocessor) coprocessor).setConnection(this);
         ((MysqlMultiStageCoprocessor) coprocessor).setBinlogChecksum(binlogChecksum);

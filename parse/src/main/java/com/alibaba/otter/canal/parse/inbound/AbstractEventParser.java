@@ -188,6 +188,7 @@ public abstract class AbstractEventParser<EVENT> extends AbstractCanalLifeCycle 
                         // 4. 获取最后的位置信息
                         long start = System.currentTimeMillis();
                         logger.warn("---> begin to find start position, it will be long time for reset or first position");
+                        // todo 注意：核心逻辑
                         EntryPosition position = findStartPosition(erosaConnection);
                         final EntryPosition startPosition = position;
                         if (startPosition == null) {
